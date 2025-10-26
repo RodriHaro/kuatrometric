@@ -1,26 +1,190 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFFEFA;
+  --foreground: #1a1a1a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Smooth scrolling for the entire document */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+}
+
+/* Custom utilities for navbar hover effects */
+.hover-underline {
+  position: relative;
+}
+
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #FF4444, #FF6B6B);
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+}
+
+.hover-underline:hover::after {
+  width: 100%;
+}
+
+/* Hero Section - Overlapping Text Effect */
+.overlap-text {
+  text-transform: uppercase;
+  letter-spacing: -0.25ch;
+  text-shadow: 1px 1px 0.25ch rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  font-weight: bold;
+  font-size: clamp(3rem, 12vw + 1vw, 12rem);
+  line-height: 0.9;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+.overlap-text .overlap-char {
+  z-index: calc(var(--m, 1) * var(--i, 1));
+  min-width: 0.25ch;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlap-text.overlap-back {
+  --m: -1;
+}
+
+
+/* Hero Section Layout */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 68, 68, 0.03) 0%, rgba(255, 107, 107, 0.05) 50%, rgba(255, 142, 142, 0.03) 100%);
+  pointer-events: none;
+}
+
+.hero-title {
+  position: relative;
+  z-index: 2;
+}
+
+/* Locomotive Scroll Styles */
+.smooth-scroll-container {
+  /* Remove fixed positioning that was causing scroll issues */
+}
+
+.c-scrollbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 11px;
+  height: 100%;
+  transform-origin: center right;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0;
+}
+
+.c-scrollbar:hover {
+  transform: scaleX(1.45);
+}
+
+.c-scrollbar_thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0.5;
+  width: 7px;
+  border-radius: 10px;
+  margin: 0 2px;
+  cursor: grab;
+}
+
+.c-scrollbar_thumb:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.has-scroll-scrolling .c-scrollbar {
+  opacity: 1;
+}
+
+.has-scroll-dragging .c-scrollbar {
+  opacity: 1;
+}
+
+.has-scroll-dragging .c-scrollbar_thumb {
+  cursor: grabbing;
+}
+
+/* Removed problematic CSS that was preventing scroll */
+
+/* Locomotive Scroll reveal animations */
+[data-scroll] {
+  opacity: 1;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+[data-scroll]:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+[data-scroll].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .overlap-text .overlap-char {
+    transition: none !important;
+  }
+  
+  .smooth-scroll-container {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  [data-scroll] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
