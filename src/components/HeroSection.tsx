@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import dynamic from 'next/dynamic';
 
 // Register ScrollTrigger plugin
 if (typeof window !== 'undefined') {
@@ -16,127 +17,72 @@ interface OverlapTextProps {
 }
 
 const OverlapText = ({ text, direction = 'back', className = '' }: OverlapTextProps) => {
-  const textRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (textRef.current) {
-      const textContent = textRef.current.textContent || '';
-      textRef.current.innerHTML = [...textContent]
-        .map((char, index) => `<span style="--i:${index}" class="overlap-char inline-block">${char}</span>`)
-        .join('');
+  // Use useLayoutEffect to prevent FOUC
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const chars = containerRef.current?.querySelectorAll('.overlap-char');
       
-      // GSAP Stagger animation for characters
-      const chars = textRef.current.querySelectorAll('.overlap-char');
-      
-      gsap.set(chars, { 
-        y: 30, 
-        opacity: 0,
-        scale: 0.8
-      });
-      
-      gsap.to(chars, {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.6,
-        ease: 'power2.out',
-        stagger: {
-          amount: 0.4,
-          from: 'start'
-        },
-        delay: 0.2
-      });
-    }
+      if (chars) {
+        // Use fromTo to ensure starting state is forced by GSAP, overriding any lingering CSS issues
+        gsap.fromTo(chars, 
+          { 
+            y: 30, 
+            opacity: 0,
+            scale: 0.8 
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            stagger: {
+               amount: 0.3,
+               from: 'start'
+            },
+            delay: 0.1
+          }
+        );
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
   }, [text]);
 
   return (
     <div
-      ref={textRef}
+      ref={containerRef}
       className={`overlap-text ${direction === 'back' ? 'overlap-back' : ''} ${className}`}
       data-text={text}
     >
-      {text}
+      {text.split('').map((char, index) => (
+        <span 
+          key={index} 
+          style={{ 
+            '--i': index, 
+            opacity: 0, // Ensure hidden initially
+            display: 'inline-block' 
+          } as React.CSSProperties} 
+          className="overlap-char"
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
     </div>
   );
 };
 
 export default function HeroSection() {
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Animate subtitle
-      if (subtitleRef.current) {
-        gsap.set(subtitleRef.current, {
-          y: 50,
-          opacity: 0
-        });
-        
-        gsap.to(subtitleRef.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          delay: 0.8
-        });
-      }
-
-      // Animate buttons with stagger
-      if (buttonsRef.current) {
-        const buttons = buttonsRef.current.querySelectorAll('button');
-        
-        gsap.set(buttons, {
-          y: 80,
-          opacity: 0,
-          scale: 0.8
-        });
-        
-        gsap.to(buttons, {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          ease: 'power2.out',
-          stagger: {
-            amount: 0.15,
-            from: 'start'
-          },
-          delay: 1.2
-        });
-      }
-    });
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section className="hero-section min-h-screen flex flex-col items-center justify-center bg-[#FFFEFA] px-6">
-      <div className="text-center">
+    <section className="hero-section h-screen flex flex-col items-center justify-center bg-transparent px-6 relative overflow-hidden">
+      <div className="text-center -mt-20 select-none z-10 relative"> 
         <OverlapText
           text="KUATROMETRIC"
           direction="back"
-          className="hero-title"
+          className="hero-title text-white"
         />
-        
-        <p 
-          ref={subtitleRef}
-          className="mt-8 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
-        >
-          Estrategias de marketing digital diseñadas para una sola métrica: el crecimiento de tu negocio.
-        </p>
-        
-        <div 
-          ref={buttonsRef}
-          className="mt-12 flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <button className="px-8 py-4 bg-gradient-to-r from-[#FF4444] to-[#FF6B6B] text-white rounded-full font-medium hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-            Ver Nuestros Proyectos
-          </button>
-          <button className="px-8 py-4 border border-gray-300 text-gray-700 rounded-full font-medium hover:border-gray-400 transition-all duration-300 hover:-translate-y-1">
-            Conocer Más
-          </button>
-        </div>
       </div>
     </section>
   );

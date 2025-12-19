@@ -1,34 +1,32 @@
+'use client';
+
+import dynamic from 'next/dynamic';
 import HeroSection from '../components/HeroSection';
-import LottieAnimation from '../components/LottieAnimation';
 import ProjectsSection from '../components/ProjectsSection';
-import ViewAllWorksButton from '../components/ViewAllWorksButton';
 import ServicesSection from '../components/ServicesSection';
 import Footer from '../components/Footer';
 
+const Scene = dynamic(() => import('@/components/3d/Scene'), { ssr: false });
+
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Section - Inicio */}
-      <section id="inicio">
-        <HeroSection />
-      </section>
+    <main className="relative min-h-screen bg-[#050205]">
+       {/* Global 3D Background */}
+      <div className="fixed inset-0 z-0 select-none pointer-events-none">
+        <Scene />
+      </div>
 
-      {/* Lottie Animation */}
-      <section className="py-20 bg-[#FFFEFA] flex justify-center items-center">
-        <LottieAnimation className="w-full max-w-2xl" />
-      </section>
+      {/* Main Content */}
+      <div className="relative z-10">
+        <section id="inicio">
+            <HeroSection />
+        </section>
 
-      {/* Projects Section */}
-      <ProjectsSection />
-
-      {/* View All Works Button */}
-      <ViewAllWorksButton />
-
-      {/* Services Section */}
-      <ServicesSection />
-      
-      {/* Footer */}
-      <Footer />
-    </div>
+        <ProjectsSection />
+        {/* ViewAllWorksButton Removed */}
+        <ServicesSection />
+        <Footer />
+      </div>
+    </main>
   );
 }

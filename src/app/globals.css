@@ -1,15 +1,15 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  --background: #FFFEFA;
+  --background: #ffffff;
   --foreground: #1a1a1a;
 }
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background: #ffffff;
   --color-foreground: var(--foreground);
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -21,7 +21,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   line-height: 1.6;
 }
 
@@ -31,13 +31,13 @@ body {
 }
 
 .hover-underline::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #FF4444, #FF6B6B);
+  background: linear-gradient(90deg, #ff4444, #ff6b6b);
   border-radius: 1px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateX(-50%);
@@ -54,9 +54,9 @@ body {
   text-shadow: 1px 1px 0.25ch rgba(0, 0, 0, 0.1);
   display: inline-block;
   font-weight: bold;
-  font-size: clamp(3rem, 12vw + 1vw, 12rem);
+  font-size: clamp(4rem, 16vw, 16rem);
   line-height: 0.9;
-  color: #1a1a1a;
+  color: #ffffff;
   white-space: nowrap;
   overflow: visible;
 }
@@ -64,13 +64,11 @@ body {
 .overlap-text .overlap-char {
   z-index: calc(var(--m, 1) * var(--i, 1));
   min-width: 0.25ch;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .overlap-text.overlap-back {
   --m: -1;
 }
-
 
 /* Hero Section Layout */
 .hero-section {
@@ -78,16 +76,7 @@ body {
   overflow: hidden;
 }
 
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 68, 68, 0.03) 0%, rgba(255, 107, 107, 0.05) 50%, rgba(255, 142, 142, 0.03) 100%);
-  pointer-events: none;
-}
+/* Hero background gradient removed for clean Goody style */
 
 .hero-title {
   position: relative;
@@ -165,23 +154,23 @@ body {
   html {
     scroll-behavior: auto;
   }
-  
+
   .overlap-text .overlap-char {
     transition: none !important;
   }
-  
+
   .smooth-scroll-container {
     position: static !important;
     height: auto !important;
     overflow: visible !important;
   }
-  
+
   [data-scroll] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
   }
-  
+
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
