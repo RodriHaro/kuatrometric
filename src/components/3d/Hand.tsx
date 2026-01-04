@@ -118,16 +118,17 @@ const steps = [
 ]
 
 const material = new MeshPhysicalMaterial({
-  color: new Color('#FF98A2'),
+  color: new Color('#FF4500'),
   metalness: 1,
-  roughness: 0.4,
-  wireframe: true,
+  roughness: 0.2,
+  wireframe: false,
+  transparent: true,
+  opacity: 0.7,
   side: DoubleSide,
 })
 
 export function Hand() {
   const { scene: arm1 } = useGLTF('/models/arm.glb')
-  const { scene: arm2 } = useGLTF('/models/arm2.glb')
   const [type, setType] = useState(1)
 
   const parent = useRef<Group>(null)
@@ -142,16 +143,6 @@ export function Hand() {
       })
     }
   }, [arm1])
-
-  useEffect(() => {
-    if (arm2) {
-      arm2.traverse((node: Object3D) => {
-        if ((node as Mesh).isMesh) {
-          (node as Mesh).material = material
-        }
-      })
-    }
-  }, [arm2])
 
   useFrame(() => {
     if (!parent.current) return
@@ -209,7 +200,6 @@ export function Hand() {
   return (
     <group ref={parent}>
       {type === 1 && <primitive object={arm1} scale={[1, 1, 1]} />}
-      {type === 2 && <primitive object={arm2} scale={[1, 1, 1]} />}
     </group>
   )
 }
