@@ -110,8 +110,8 @@ export default function MobileNavbar() {
           h-[72px] flex items-center pl-0
           transition-all duration-300 ease-out
           ${isScrolled 
-            ? 'bg-[#FFFEFA]/95 backdrop-blur-md border-b border-[#EDE9E0]' 
-            : 'bg-[#FFFEFA]'
+            ? 'bg-black/95 backdrop-blur-md border-b border-white/10' 
+            : 'bg-black'
           }
         `}
         style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}
@@ -146,19 +146,19 @@ export default function MobileNavbar() {
         >
           <span 
             className={`
-              block w-6 h-0.5 bg-black transition-all duration-250 ease-out origin-center
+              block w-6 h-0.5 bg-white transition-all duration-250 ease-out origin-center
               ${isOpen ? 'rotate-45 translate-y-2' : ''}
             `}
           />
           <span 
             className={`
-              block w-6 h-0.5 bg-black mt-1.5 transition-all duration-250 ease-out
+              block w-6 h-0.5 bg-white mt-1.5 transition-all duration-250 ease-out
               ${isOpen ? 'opacity-0 scale-0' : ''}
             `}
           />
           <span 
             className={`
-              block w-6 h-0.5 bg-black mt-1.5 transition-all duration-250 ease-out origin-center
+              block w-6 h-0.5 bg-white mt-1.5 transition-all duration-250 ease-out origin-center
               ${isOpen ? '-rotate-45 -translate-y-2' : ''}
             `}
           />

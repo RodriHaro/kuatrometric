@@ -33,22 +33,22 @@ export default function Navbar() {
       className={`
         hidden md:block fixed top-0 left-0 right-0 z-50 
         transition-all duration-300 ease-out py-6
-        ${isScrolled ? 'bg-white/95 backdrop-blur-md' : 'bg-transparent'}
+        ${isScrolled ? 'bg-black/95 backdrop-blur-md' : 'bg-black'}
       `}
     >
-      <div className="max-w-screen-2xl mx-auto px-10 flex justify-between items-center relative">
+      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center relative">
         
         {/* Left Links */}
-        <div className="flex gap-12 w-1/3">
+        <div className="flex gap-12 w-1/3 justify-end">
           <button 
             onClick={() => smoothScrollTo('proyectos')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-black"
+            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
             01. Proyectos
           </button>
           <button 
             onClick={() => smoothScrollTo('nosotros')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-black"
+            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
             02. Nosotros
           </button>
@@ -60,25 +60,25 @@ export default function Navbar() {
             <Image
               src="/images/logos/logokuatrometric.png"
               alt="KUATROMETRIC"
-              width={400}
-              height={100}
+              width={480}
+              height={120}
               priority
-              className="w-[400px] h-auto object-contain"
+              className="w-[480px] h-auto object-contain"
             />
           </button>
         </div>
 
         {/* Right Links */}
-        <div className="flex gap-12 w-1/3 justify-end">
+        <div className="flex gap-12 w-1/3 justify-start">
           <button 
             onClick={() => smoothScrollTo('servicios')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-black"
+            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
             03. Servicios
           </button>
            <button 
             onClick={() => smoothScrollTo('contacto')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-black"
+            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
             04. Contacto
           </button>

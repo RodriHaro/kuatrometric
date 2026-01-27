@@ -1,6 +1,8 @@
 import { useGLTF } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useRef, useEffect, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   Color,
   DoubleSide,
@@ -13,6 +15,10 @@ import {
   Group
 } from 'three'
 
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
+
 // Helper function mapRange
 function mapRange(value: number, inMin: number, inMax: number, outMin: number, outMax: number) {
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
@@ -20,7 +26,7 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
 
 const steps = [
   {
-    position: [-0.1, -1.75, 0],
+    position: [0.25, -1.75, 0],
     scale: 0.045,
     rotation: [0, Math.PI * 0.5, 0],
     type: 1,
@@ -123,7 +129,7 @@ const material = new MeshPhysicalMaterial({
   roughness: 0.2,
   wireframe: false,
   transparent: true,
-  opacity: 0.7,
+  opacity: 0,
   side: DoubleSide,
 })
 
@@ -134,7 +140,7 @@ export function Hand() {
   const parent = useRef<Group>(null)
   const { viewport } = useThree()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (arm1) {
       arm1.traverse((node: Object3D) => {
         if ((node as Mesh).isMesh) {
@@ -143,6 +149,63 @@ export function Hand() {
       })
     }
   }, [arm1])
+
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const targetOpacity = 0.7
+
+    if (prefersReducedMotion) {
+      material.opacity = targetOpacity
+      return
+    }
+
+    gsap.fromTo(
+      material,
+      { opacity: 0 },
+      { opacity: targetOpacity, duration: 0.8, ease: 'power3.out', delay: 0.1 }
+    )
+  }, [])
+
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return
+    const section = document.getElementById('clientes')
+    if (!section) return
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const duration = prefersReducedMotion ? 0 : 0.6
+    const darkColor = new Color('#000000')
+    const originalColor = new Color('#FF4500')
+
+    const toDark = () =>
+      gsap.to(material.color, {
+        r: darkColor.r,
+        g: darkColor.g,
+        b: darkColor.b,
+        duration,
+        ease: 'power2.out',
+      })
+    const toOriginal = () =>
+      gsap.to(material.color, {
+        r: originalColor.r,
+        g: originalColor.g,
+        b: originalColor.b,
+        duration,
+        ease: 'power2.out',
+      })
+
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: 'top 70%',
+      end: 'bottom 45%',
+      onEnter: toDark,
+      onEnterBack: toDark,
+      onLeave: toOriginal,
+      onLeaveBack: toOriginal,
+    })
+
+    return () => trigger.kill()
+  }, [])
 
   useFrame(() => {
     if (!parent.current) return

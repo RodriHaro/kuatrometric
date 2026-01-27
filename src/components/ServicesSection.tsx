@@ -101,7 +101,7 @@ export default function ServicesSection() {
       <div ref={trackRef} className="flex gap-12 px-12 md:px-24 w-max items-center">
         {/* Header/Intro Card */}
         <div className="w-[80vw] md:w-[600px] shrink-0 flex flex-col justify-center">
-            <span className="text-sm font-mono text-[#FF98A2] mb-4 tracking-wider">[02] SERVICIOS</span>
+            <span className="text-sm font-mono text-[#ca0013] mb-4 tracking-wider">[02] SERVICIOS</span>
             <h2 className="text-6xl md:text-8xl font-bold text-white leading-none mb-8">
               LO QUE<br/>HACEMOS
             </h2>
@@ -116,15 +116,15 @@ export default function ServicesSection() {
 
         {/* Service Cards */}
         {services.map((service, index) => (
-          <div 
-            key={service.id} 
-            className="w-[85vw] md:w-[450px] h-[550px] shrink-0 border border-gray-800 bg-[#050205]/40 backdrop-blur-sm p-8 md:p-12 flex flex-col justify-between group hover:border-[#FF98A2]/50 transition-colors duration-500 rounded-sm"
+          <div
+            key={service.id}
+            className="w-[85vw] md:w-[450px] h-[550px] shrink-0 border border-gray-800 bg-[#050205]/40 backdrop-blur-sm p-8 md:p-12 flex flex-col justify-between group hover:border-[#ca0013]/50 transition-colors duration-500 rounded-sm"
           >
             <div>
-              <span className="block text-7xl md:text-9xl font-bold text-[#FF98A2] mb-6 leading-none">
+              <span className="block text-7xl md:text-9xl font-bold text-[#ca0013] mb-6 leading-none">
                 {service.number}
               </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-white uppercase mb-4 group-hover:text-[#FF98A2] transition-colors duration-300">
+              <h3 className="text-2xl md:text-3xl font-bold text-white uppercase mb-4 group-hover:text-[#ca0013] transition-colors duration-300">
                 {service.title}
               </h3>
               <p className="text-gray-400 text-lg leading-relaxed">

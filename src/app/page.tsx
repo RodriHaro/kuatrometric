@@ -2,8 +2,10 @@
 
 import dynamic from 'next/dynamic';
 import HeroSection from '../components/HeroSection';
-import ProjectsSection from '../components/ProjectsSection';
+import ClientsSection from '../components/ClientsSection';
+import AboutSection from '../components/AboutSection';
 import ServicesSection from '../components/ServicesSection';
+import CtaSection from '../components/CtaSection';
 import Footer from '../components/Footer';
 
 const Scene = dynamic(() => import('@/components/3d/Scene'), { ssr: false });
@@ -22,9 +24,11 @@ export default function Home() {
             <HeroSection />
         </section>
 
-        <ProjectsSection />
+        <ClientsSection />
         {/* ViewAllWorksButton Removed */}
         <ServicesSection />
+        <AboutSection />
+        <CtaSection />
         <Footer />
       </div>
     </main>

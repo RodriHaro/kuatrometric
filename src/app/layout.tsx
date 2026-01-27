@@ -26,7 +26,7 @@ export default function RootLayout({
         <SmoothScroll />
         <Navbar />
         <MobileNavbar />
-        <main className="pt-[72px] md:pt-[90px]">
+        <main className="pt-[72px] md:pt-[90px] bg-[var(--page-bg)]">
           {children}
         </main>
       </body>

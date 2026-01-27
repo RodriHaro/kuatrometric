@@ -14,10 +14,17 @@ interface OverlapTextProps {
   text: string;
   direction?: 'back' | 'front';
   className?: string;
+  highlightWord?: string;
 }
 
-const OverlapText = ({ text, direction = 'back', className = '' }: OverlapTextProps) => {
+const OverlapText = ({
+  text,
+  direction = 'back',
+  className = '',
+  highlightWord,
+}: OverlapTextProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const words = text.split(' ');
 
   // Use useLayoutEffect to prevent FOUC
   useLayoutEffect(() => {
@@ -57,17 +64,27 @@ const OverlapText = ({ text, direction = 'back', className = '' }: OverlapTextPr
       className={`overlap-text ${direction === 'back' ? 'overlap-back' : ''} ${className}`}
       data-text={text}
     >
-      {text.split('').map((char, index) => (
-        <span 
-          key={index} 
-          style={{ 
-            '--i': index, 
-            opacity: 0, // Ensure hidden initially
-            display: 'inline-block' 
-          } as React.CSSProperties} 
-          className="overlap-char"
+      {words.map((word, wordIndex) => (
+        <span
+          key={`${word}-${wordIndex}`}
+          className={`overlap-word${word === highlightWord ? ' overlap-word-highlight' : ''}`}
         >
-          {char === ' ' ? '\u00A0' : char}
+          {word.split('').map((char, index) => (
+            <span
+              key={`${wordIndex}-${index}`}
+              style={{
+                '--i': wordIndex * 100 + index,
+                opacity: 0, // Ensure hidden initially
+                display: 'inline-block',
+              } as React.CSSProperties}
+              className="overlap-char"
+            >
+              {char}
+            </span>
+          ))}
+          {wordIndex < words.length - 1 ? (
+            <span className="overlap-space">&nbsp;</span>
+          ) : null}
         </span>
       ))}
     </div>
@@ -76,13 +93,24 @@ const OverlapText = ({ text, direction = 'back', className = '' }: OverlapTextPr
 
 export default function HeroSection() {
   return (
-    <section className="hero-section h-screen flex flex-col items-center justify-center bg-transparent px-6 relative overflow-hidden">
-      <div className="text-center -mt-20 select-none z-10 relative"> 
-        <OverlapText
-          text="KUATROMETRIC"
-          direction="back"
-          className="hero-title text-white"
-        />
+    <section className="hero-section h-screen flex flex-col items-start justify-center bg-transparent px-6 relative overflow-hidden">
+      <div className="w-full max-w-5xl -mt-20 select-none z-10 relative">
+        <div className="space-y-2 text-left">
+          <OverlapText
+            text="Somos"
+            direction="back"
+            className="hero-title hero-overlap-text text-white"
+          />
+          <OverlapText
+            text="KUATROMETRIC"
+            direction="back"
+            highlightWord="KUATROMETRIC"
+            className="hero-title hero-overlap-text text-white"
+          />
+        </div>
+        <p className="mt-4 text-sm sm:text-base md:text-lg text-white/80 max-w-2xl">
+          Agencia digital de marketing enfocada en estrategia, contenido y performance.
+        </p>
       </div>
     </section>
   );
