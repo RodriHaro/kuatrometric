@@ -43,14 +43,6 @@ export default function AboutSection() {
       const items = gsap.utils.toArray<HTMLElement>('[data-anim]');
       if (prefersReducedMotion) {
         gsap.set(items, { opacity: 1, y: 0 });
-        if (stackRef.current) {
-          const cards = gsap.utils.toArray<HTMLElement>('[data-stack-card]', stackRef.current);
-          gsap.set(cards, {
-            y: (index) => index * 14,
-            scale: (index) => 1 - index * 0.02,
-            zIndex: (index) => cards.length - index,
-          });
-        }
         return;
       }
       gsap.fromTo(
