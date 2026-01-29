@@ -3,27 +3,32 @@
 import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import FlowingMenu from './FlowingMenu';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const highlights = [
+const flowingItems = [
   {
-    title: 'Estrategia primero',
-    description: 'Diagnóstico claro, objetivos medibles y un plan que prioriza impacto.'
+    text: 'Estrategia primero',
+    link: '#servicios',
+    image: '/images/logos/logok.png'
   },
   {
-    title: 'Creatividad con propósito',
-    description: 'Conceptos visuales y mensajes que conectan, no solo que se ven bien.'
+    text: 'Creatividad con propósito',
+    link: '#servicios',
+    image: '/images/logos/logok.png'
   },
   {
-    title: 'Iteración constante',
-    description: 'Medimos, ajustamos y optimizamos cada etapa para crecer sostenido.'
+    text: 'Iteración constante',
+    link: '#servicios',
+    image: '/images/logos/logok.png'
   },
   {
-    title: 'Equipo cercano',
-    description: 'Trabajo colaborativo, comunicación directa y ejecución ágil.'
+    text: 'Equipo cercano',
+    link: '#servicios',
+    image: '/images/logos/logok.png'
   }
 ];
 
@@ -38,6 +43,14 @@ export default function AboutSection() {
       const items = gsap.utils.toArray<HTMLElement>('[data-anim]');
       if (prefersReducedMotion) {
         gsap.set(items, { opacity: 1, y: 0 });
+        if (stackRef.current) {
+          const cards = gsap.utils.toArray<HTMLElement>('[data-stack-card]', stackRef.current);
+          gsap.set(cards, {
+            y: (index) => index * 14,
+            scale: (index) => 1 - index * 0.02,
+            zIndex: (index) => cards.length - index,
+          });
+        }
         return;
       }
       gsap.fromTo(
@@ -55,6 +68,8 @@ export default function AboutSection() {
           }
         }
       );
+
+      // FlowingMenu handles its own hover animations.
     }, sectionRef);
 
     return () => ctx.revert();
@@ -75,7 +90,7 @@ export default function AboutSection() {
               className="text-4xl md:text-6xl font-bold text-white leading-tight"
               data-anim
             >
-              Diseñamos marcas que crecen con estrategia y performance.
+              Diseñamos estrategias que hacen crecer tu marca
             </h2>
           </div>
 
@@ -86,21 +101,16 @@ export default function AboutSection() {
               precisa para impulsar resultados sostenibles.
             </p>
 
-            <div className="mt-10 grid sm:grid-cols-2 gap-6">
-              {highlights.map((item) => (
-                <div
-                  key={item.title}
-                  className="border border-white/10 bg-[#050205]/40 backdrop-blur-sm p-6 rounded-2xl"
-                  data-anim
-                >
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-white/65 leading-relaxed">
-                    {item.description}
-                  </p>
-                </div>
-              ))}
+            <div className="mt-10" style={{ height: '320px', position: 'relative' }} data-anim>
+              <FlowingMenu
+                items={flowingItems}
+                speed={10}
+                textColor="#ffffff"
+                bgColor="transparent"
+                marqueeBgColor="#ffffff"
+                marqueeTextColor="#060010"
+                borderColor="#ffffff"
+              />
             </div>
           </div>
         </div>

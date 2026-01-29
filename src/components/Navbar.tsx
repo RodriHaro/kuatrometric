@@ -58,12 +58,12 @@ export default function Navbar() {
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button onClick={scrollToTop} className="block transition-transform hover:scale-105">
             <Image
-              src="/images/logos/logokuatrometric.png"
+              src="/images/logos/logok.png"
               alt="KUATROMETRIC"
-              width={480}
-              height={120}
+              width={100}
+              height={100}
               priority
-              className="w-[480px] h-auto object-contain"
+              className="w-[100px] h-auto object-contain"
             />
           </button>
         </div>

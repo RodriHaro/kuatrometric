@@ -76,19 +76,19 @@ export default function Footer() {
                 href="#proyectos"
                 className="block text-lg font-medium text-black hover:text-gray-600 transition-colors duration-300"
               >
-                Projects
+                Servicios
               </a>
               <a 
                 href="#servicios"
                 className="block text-lg font-medium text-black hover:text-gray-600 transition-colors duration-300"
               >
-                Services
+                Nosotros
               </a>
               <a 
                 href="#contacto"
                 className="block text-lg font-medium text-black hover:text-gray-600 transition-colors duration-300"
               >
-                Contact
+                Contacto
               </a>
             </nav>
           </div>
@@ -127,7 +127,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="text-center mt-12 pt-8 border-t border-gray-300">
           <p className="text-sm text-gray-500">
-            © 2025 Kuatrometric. Todos los derechos reservados.
+            © 2026 Kuatrometric.
           </p>
         </div>
       </div>
