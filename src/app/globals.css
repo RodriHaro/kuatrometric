@@ -76,7 +76,7 @@ body {
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #ff4444, #ff6b6b);
+  background: linear-gradient(90deg, #e40014, #e40014);
   border-radius: 1px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translateX(-50%);
@@ -117,11 +117,16 @@ body {
 }
 
 .overlap-word-highlight {
-  background: #ca0013;
+  background: #e40014;
   color: #ffffff;
   padding: 0 0.12em;
   border-radius: 0.08em;
   box-decoration-break: clone;
+}
+
+/* Asegura que las letras del highlight siempre sean visibles */
+.overlap-word-highlight .overlap-char {
+  opacity: 1 !important;
 }
 
 .overlap-space {
@@ -217,6 +222,20 @@ body {
   transform: skewX(12deg);
   height: 150px;
   max-height: none;
+}
+
+/* Hero: ajustes mobile para evitar solapamiento de "Somos" y "KUATROMETRIC" */
+@media (max-width: 640px) {
+  .hero-section .overlap-text {
+    white-space: normal;
+    text-shadow: none;
+    letter-spacing: -0.06ch;
+  }
+
+  .hero-section .hero-overlap-text {
+    font-size: 2.25rem;
+    line-height: 1.1;
+  }
 }
 
 /* Hero Section Layout */
@@ -335,14 +354,14 @@ body {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: #e40014;
+  --primary-foreground: #ffffff;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: #e40014;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
@@ -354,10 +373,10 @@ body {
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-primary: #e40014;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e40014;
+  --sidebar-accent-foreground: #ffffff;
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
@@ -369,14 +388,14 @@ body {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: #e40014;
+  --primary-foreground: #050205;
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --accent: #e40014;
+  --accent-foreground: #050205;
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
@@ -388,10 +407,10 @@ body {
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-primary: #e40014;
+  --sidebar-primary-foreground: #050205;
+  --sidebar-accent: #e40014;
+  --sidebar-accent-foreground: #050205;
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }

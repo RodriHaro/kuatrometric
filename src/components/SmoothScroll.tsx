@@ -16,19 +16,26 @@ export default function SmoothScroll() {
       touchMultiplier: 2,
     });
 
+    // Exponer instancia globalmente para navegación programática (nav, botones, etc.)
+    (window as any).__lenis = lenis;
+    // Notificar a quien lo necesite que Lenis está listo
+    window.dispatchEvent(new Event("lenisReady"));
+
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    const raf = (time: number) => {
       lenis.raf(time * 1000);
-    });
+    };
 
+    gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(raf);
+      if ((window as any).__lenis === lenis) {
+        (window as any).__lenis = null;
+      }
     };
   }, []);
 

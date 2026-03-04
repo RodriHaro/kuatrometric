@@ -42,14 +42,14 @@ export default function CtaSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="contacto" className="py-24 bg-transparent overflow-hidden">
+    <section ref={sectionRef} id="contacto" className="py-12 md:py-24 bg-transparent overflow-hidden">
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="rounded-3xl border border-white/10 bg-[#0b0b0b]/80 backdrop-blur-sm p-10 md:p-16 relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(202,0,19,0.25),transparent_50%)]" />
+        <div className="rounded-3xl border border-white/10 bg-[#0b0b0b]/30 backdrop-blur-sm p-10 md:p-16 relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(228,0,20,0.18),transparent_55%)]" />
 
           <div className="relative z-10 max-w-4xl">
-            <span className="text-sm font-mono text-[#ca0013] tracking-wider" data-cta-anim>
-              [03] HABLEMOS
+            <span className="text-sm font-mono text-[#e40014] tracking-wider" data-cta-anim>
+              [04] HABLEMOS
             </span>
             <h2
               className="mt-4 text-4xl md:text-6xl font-bold text-white leading-tight"
@@ -63,10 +63,12 @@ export default function CtaSection() {
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4" data-cta-anim>
               <a
-                href="mailto:info@kuatrometric.com"
-                className="inline-flex items-center justify-center rounded-full bg-[#ca0013] px-8 py-4 text-white font-semibold tracking-wide transition-transform duration-300 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ca0013]"
+                href="https://wa.me/5492604272400?text=Hola%20Kuatrometric%2C%20me%20gustar%C3%ADa%20agendar%20una%20llamada%20para%20hablar%20sobre%20mi%20proyecto."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-full bg-[#25D366] px-8 py-4 text-white font-semibold tracking-wide transition-transform duration-300 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
               >
-                Agenda una llamada
+                Hablemos por WhatsApp
               </a>
               <a
                 href="#servicios"

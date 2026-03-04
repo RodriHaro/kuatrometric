@@ -68,14 +68,13 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="nosotros" className="py-24 bg-transparent overflow-hidden">
+    <section ref={sectionRef} id="nosotros" className="py-12 md:py-24 bg-transparent overflow-hidden">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-5">
-            <div className="flex items-center gap-3 mb-6" data-anim>
-              <span className="w-3 h-3 rounded-full bg-[#ca0013]" />
-              <span className="text-sm font-medium text-white/70 uppercase tracking-wider">
-                Sobre nosotros
+            <div className="flex items-center mb-6" data-anim>
+              <span className="text-sm font-mono text-[#e40014] uppercase tracking-wider">
+                [03] NOSOTROS
               </span>
             </div>
             <h2

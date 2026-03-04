@@ -3,21 +3,68 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
+declare global {
+  interface Window {
+    __lenis?: {
+      scrollTo: (target: HTMLElement | number | string, options?: { offset?: number }) => void;
+    } | null;
+  }
+}
+
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const cleanupFns: Array<() => void> = [];
+
+    const handleWindowScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const attachLenisListener = () => {
+      const lenis = window.__lenis as any;
+      if (!lenis || typeof lenis.on !== 'function' || typeof lenis.off !== 'function') {
+        return false;
+      }
+
+      const onLenisScroll = (e: { scroll: number }) => {
+        setIsScrolled(e.scroll > 50);
+      };
+
+      lenis.on('scroll', onLenisScroll);
+      cleanupFns.push(() => lenis.off('scroll', onLenisScroll));
+      return true;
+    };
+
+    // Intentamos usar Lenis; si no está listo, usamos window.scroll y esperamos el evento "lenisReady"
+    if (!attachLenisListener()) {
+      window.addEventListener('scroll', handleWindowScroll, { passive: true });
+      cleanupFns.push(() => window.removeEventListener('scroll', handleWindowScroll));
+
+      const onLenisReady = () => {
+        window.removeEventListener('scroll', handleWindowScroll);
+        attachLenisListener();
+        window.removeEventListener('lenisReady', onLenisReady as EventListener);
+      };
+
+      window.addEventListener('lenisReady', onLenisReady as EventListener);
+      cleanupFns.push(() => window.removeEventListener('lenisReady', onLenisReady as EventListener));
+    }
+
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+    };
   }, []);
 
   const smoothScrollTo = (elementId: string) => {
     const element = document.getElementById(elementId);
-    if (element) {
+    if (!element) return;
+
+    const lenis = window.__lenis;
+
+    if (lenis) {
+      lenis.scrollTo(element, { offset: -90 });
+    } else {
       const navbarHeight = 90;
       const targetPosition = element.offsetTop - navbarHeight;
       window.scrollTo({ top: targetPosition, behavior: 'smooth' });
@@ -25,32 +72,49 @@ export default function Navbar() {
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const lenis = window.__lenis;
+
+    if (lenis) {
+      lenis.scrollTo(0);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
-    <nav 
-      className={`
-        hidden md:block fixed top-0 left-0 right-0 z-50 
-        transition-all duration-300 ease-out py-6
-        ${isScrolled ? 'bg-black/95 backdrop-blur-md' : 'bg-black'}
-      `}
+    <nav
+      className="
+        hidden md:block fixed top-6 left-0 right-0 z-50
+        flex justify-center
+        px-4
+        pointer-events-none
+      "
     >
-      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center relative">
+      <div
+        className={`
+          pointer-events-auto
+          w-full max-w-[900px] mx-auto
+          px-8 py-3
+          flex justify-between items-center relative
+          rounded-full border border-gray-800
+          transition-all duration-300 ease-out
+          ${isScrolled ? 'bg-black/70 backdrop-blur-md shadow-xl' : 'bg-black/40 backdrop-blur-md shadow-lg'}
+        `}
+      >
         
         {/* Left Links */}
         <div className="flex gap-12 w-1/3 justify-end">
           <button 
-            onClick={() => smoothScrollTo('proyectos')}
+            onClick={() => smoothScrollTo('clientes')}
             className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
-            01. Proyectos
+            01. Clientes
           </button>
           <button 
-            onClick={() => smoothScrollTo('nosotros')}
+            onClick={() => smoothScrollTo('servicios')}
             className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
-            02. Nosotros
+            02. Servicios
           </button>
         </div>
 
@@ -71,12 +135,12 @@ export default function Navbar() {
         {/* Right Links */}
         <div className="flex gap-12 w-1/3 justify-start">
           <button 
-            onClick={() => smoothScrollTo('servicios')}
+            onClick={() => smoothScrollTo('nosotros')}
             className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >
-            03. Servicios
+            03. Nosotros
           </button>
-           <button 
+          <button 
             onClick={() => smoothScrollTo('contacto')}
             className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
           >

@@ -52,6 +52,13 @@ const services: Service[] = [
     title: 'Branding',
     description: 'Construimos identidades de marca que conectan y perduran en la mente del consumidor.',
     tags: ['Logo', 'Identidad', 'Voz', 'Diseño']
+  },
+  {
+    id: '06',
+    number: '06',
+    title: 'Automatización y software a medida',
+    description: 'Diseñamos y desarrollamos soluciones digitales a medida que automatizan procesos clave, reducen errores operativos y liberan tiempo para que tu equipo se enfoque en lo estratégico.',
+    tags: ['Automatización', 'Integraciones', 'Sistemas a medida', 'Flujos']
   }
 ];
 
@@ -101,7 +108,7 @@ export default function ServicesSection() {
       <div ref={trackRef} className="flex gap-12 px-12 md:px-24 w-max items-center">
         {/* Header/Intro Card */}
         <div className="w-[80vw] md:w-[600px] shrink-0 flex flex-col justify-center">
-            <span className="text-sm font-mono text-[#ca0013] mb-4 tracking-wider">[02] SERVICIOS</span>
+            <span className="text-sm font-mono text-[#e40014] mb-4 tracking-wider">[02] SERVICIOS</span>
             <h2 className="text-6xl md:text-8xl font-bold text-white leading-none mb-8">
               LO QUE<br/>HACEMOS
             </h2>
@@ -109,22 +116,22 @@ export default function ServicesSection() {
               Soluciones digitales integrales diseñadas para elevar tu marca en un ecosistema competitivo.
             </p>
             <div className="mt-12 flex items-center gap-4">
-              <span className="text-gray-500 text-sm font-mono">SCROLL TO EXPLORE</span>
+              <span className="text-gray-500 text-sm font-mono">DESLIZÁ PARA EXPLORAR</span>
               <div className="h-[1px] w-20 bg-gray-600"></div>
             </div>
         </div>
 
         {/* Service Cards */}
         {services.map((service, index) => (
-          <div
+            <div
             key={service.id}
-            className="w-[85vw] md:w-[450px] h-[550px] shrink-0 border border-gray-800 bg-[#050205]/40 backdrop-blur-sm p-8 md:p-12 flex flex-col justify-between group hover:border-[#ca0013]/50 transition-colors duration-500 rounded-sm"
+            className="w-[85vw] md:w-[450px] h-[550px] shrink-0 border border-gray-800 bg-[#050205]/40 backdrop-blur-sm p-8 md:p-12 flex flex-col justify-between group hover:border-[#e40014]/50 transition-colors duration-500 rounded-sm"
           >
             <div>
-              <span className="block text-7xl md:text-9xl font-bold text-[#ca0013] mb-6 leading-none">
+              <span className="block text-7xl md:text-9xl font-bold text-[#e40014] mb-6 leading-none">
                 {service.number}
               </span>
-              <h3 className="text-2xl md:text-3xl font-bold text-white uppercase mb-4 group-hover:text-[#ca0013] transition-colors duration-300">
+              <h3 className="text-2xl md:text-3xl font-bold text-white uppercase mb-4 group-hover:text-[#e40014] transition-colors duration-300">
                 {service.title}
               </h3>
               <p className="text-gray-400 text-lg leading-relaxed">

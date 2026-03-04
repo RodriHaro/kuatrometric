@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 
+declare global {
+  interface Window {
+    __lenis?: {
+      scrollTo: (target: HTMLElement | number | string, options?: { offset?: number }) => void;
+    } | null;
+  }
+}
+
 interface NavItem {
   href: string;
   label: string;
@@ -11,11 +19,10 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: '#inicio', label: 'INICIO', path: '/' },
-  { href: '#proyectos', label: 'PROYECTOS', path: '/proyectos' },
-  { href: '#nosotros', label: 'NOSOTROS', path: '/nosotros' },
-  { href: '#servicios', label: 'SERVICIOS', path: '/servicios' },
-  { href: '#contacto', label: 'CONTACTO', path: '/contacto' },
+  { href: '#clientes', label: '01. Clientes', path: '/' },
+  { href: '#servicios', label: '02. Servicios', path: '/' },
+  { href: '#nosotros', label: '03. Nosotros', path: '/' },
+  { href: '#contacto', label: '04. Contacto', path: '/' },
 ];
 
 const socialLinks = [
@@ -76,22 +83,34 @@ export default function MobileNavbar() {
   const smoothScrollTo = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (element) {
-      const navbarHeight = 72;
-      const targetPosition = element.offsetTop - navbarHeight;
-      
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth',
-      });
+      const lenis = window.__lenis;
+
+      if (lenis) {
+        lenis.scrollTo(element, { offset: -72 });
+      } else {
+        const navbarHeight = 72;
+        const targetPosition = element.offsetTop - navbarHeight;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth',
+        });
+      }
     }
     setIsOpen(false);
   };
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
+    const lenis = window.__lenis;
+
+    if (lenis) {
+      lenis.scrollTo(0);
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
     setIsOpen(false);
   };
 
@@ -215,20 +234,20 @@ export default function MobileNavbar() {
             <div className="space-y-3">
               <div>
                 <p className="text-gray-600 text-[18px]">
-                  (+359) 932 91 20 42
+                  +54 9 2604 272400
                 </p>
               </div>
               
               <div className="flex items-center justify-center space-x-3">
                 <button
-                  onClick={() => window.location.href = 'mailto:info@kuatrometric.com'}
+                  onClick={() => window.location.href = 'mailto:kuatrometric@gmail.com'}
                   className="
                     group flex items-center space-x-3
                     transition-all duration-200 ease-out
                     focus:outline-none focus:ring-2 focus:ring-[#FF6B6B] focus:ring-offset-2 rounded-lg
                     hover:-translate-y-px active:translate-y-0
                   "
-                  aria-label="Enviar email a info@kuatrometric.com"
+                  aria-label="Enviar email a kuatrometric@gmail.com"
                 >
                   <div className="
                     w-10 h-10 bg-black rounded-full flex items-center justify-center
@@ -253,7 +272,7 @@ export default function MobileNavbar() {
                     transition-transform duration-200 ease-out
                     group-hover:-translate-y-px
                   ">
-                    INFO@KUATROMETRIC.COM
+                    KUATROMETRIC@GMAIL.COM
                   </span>
                 </button>
               </div>
@@ -263,7 +282,7 @@ export default function MobileNavbar() {
           {/* Social Media Section */}
           <div className="text-center">
             <h3 className="text-gray-400 text-[16px] mb-8 tracking-wide">
-              Follow us
+              Seguinos
             </h3>
             <ul className="space-y-6 max-w-xs mx-auto">
               {socialLinks.map((social) => (

@@ -14,22 +14,19 @@ const clientLogos = [
 
 export default function ClientsSection() {
   return (
-    <section id="clientes" className="py-20 bg-transparent overflow-hidden">
-      <div className="mx-8 clients-shell">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-3 h-3 bg-[#ca0013] rounded-full mr-3"></div>
-            <span className="text-sm font-medium text-black/70 uppercase tracking-wider">
-              Confianza
+    <section id="clientes" className="py-10 md:py-20 bg-transparent overflow-hidden">
+      <div className="max-w-[80vw] mx-auto clients-shell">
+        <div className="text-center mb-8 md:mb-12">
+          <div className="flex items-center justify-center mb-4 md:mb-6">
+            <span className="text-sm font-mono text-[#e40014] uppercase tracking-wider">
+              [01] CLIENTES
             </span>
           </div>
 
-          <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto">
-            <span className="text-sm font-mono text-black/60 hidden md:block">[00]</span>
-            <h2 className="text-4xl md:text-6xl font-bold text-black text-center flex-1 leading-none tracking-tight">
+          <div className="flex items-center justify-center mb-4 md:mb-6 max-w-5xl mx-auto">
+            <h2 className="text-3xl md:text-6xl font-bold text-black text-center leading-none tracking-tight">
               Clientes que confían en nosotros
             </h2>
-            <span className="text-sm font-mono text-black/60 hidden md:block">©2025</span>
           </div>
 
           <p className="text-lg text-black/70 max-w-2xl mx-auto leading-relaxed">
@@ -43,7 +40,7 @@ export default function ClientsSection() {
             speed={90}
             gap={96}
             logoHeight={180}
-            fadeOut={false}
+            fadeOut
             pauseOnHover
             scaleOnHover={false}
             ariaLabel="Clientes que confían en Kuatrometric"

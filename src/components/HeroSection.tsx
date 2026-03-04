@@ -1,14 +1,7 @@
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import dynamic from 'next/dynamic';
-
-// Register ScrollTrigger plugin
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 interface OverlapTextProps {
   text: string;
@@ -23,44 +16,10 @@ const OverlapText = ({
   className = '',
   highlightWord,
 }: OverlapTextProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const words = text.split(' ');
-
-  // Use useLayoutEffect to prevent FOUC
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const chars = containerRef.current?.querySelectorAll('.overlap-char');
-      
-      if (chars) {
-        // Use fromTo to ensure starting state is forced by GSAP, overriding any lingering CSS issues
-        gsap.fromTo(chars, 
-          { 
-            y: 30, 
-            opacity: 0,
-            scale: 0.8 
-          },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            ease: 'power3.out',
-            stagger: {
-               amount: 0.3,
-               from: 'start'
-            },
-            delay: 0.1
-          }
-        );
-      }
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [text]);
 
   return (
     <div
-      ref={containerRef}
       className={`overlap-text ${direction === 'back' ? 'overlap-back' : ''} ${className}`}
       data-text={text}
     >
@@ -72,12 +31,7 @@ const OverlapText = ({
           {word.split('').map((char, index) => (
             <span
               key={`${wordIndex}-${index}`}
-              style={{
-                '--i': wordIndex * 100 + index,
-                opacity: 0, // Ensure hidden initially
-                display: 'inline-block',
-              } as React.CSSProperties}
-              className="overlap-char"
+              className="overlap-char inline-block"
             >
               {char}
             </span>
@@ -91,9 +45,66 @@ const OverlapText = ({
   );
 };
 
+const QuoteText = ({ children }: { children: ReactNode }) => (
+  <figure className="mt-[10%] max-w-3xl text-left">
+    <blockquote className="hero-quote inline-block text-base sm:text-xl md:text-2xl lg:text-3xl text-white leading-relaxed font-semibold tracking-tight text-left">
+      <span className="inline-block border-l border-[#e40014]/70 pl-4 ml-1">
+        {children}
+      </span>
+    </blockquote>
+  </figure>
+);
+
 export default function HeroSection() {
+  const heroRef = useRef<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    if (!heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      const titles = heroRef.current?.querySelectorAll<HTMLElement>('.hero-title');
+      const quote = heroRef.current?.querySelector<HTMLElement>('.hero-quote');
+
+      if (titles && titles.length) {
+        // Animación constante y sutil sobre los títulos, sin afectar visibilidad inicial
+        gsap.to(titles, {
+          y: 6,
+          duration: 2.4,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          stagger: {
+            each: 0.4,
+            yoyo: true,
+          },
+        });
+      }
+
+      if (quote) {
+        // Aparición elegante del texto de la cita
+        gsap.fromTo(
+          quote,
+          { opacity: 0, y: 20, filter: 'blur(6px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 1.1,
+            ease: 'power2.out',
+            delay: 0.3,
+          }
+        );
+      }
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="hero-section h-screen flex flex-col items-start justify-center bg-transparent px-6 relative overflow-hidden">
+    <section
+      ref={heroRef}
+      className="hero-section h-screen flex flex-col items-center justify-center bg-transparent px-6 relative overflow-hidden"
+    >
       <div className="w-full max-w-5xl -mt-20 select-none z-10 relative">
         <div className="space-y-2 text-left">
           <OverlapText
@@ -108,9 +119,9 @@ export default function HeroSection() {
             className="hero-title hero-overlap-text text-white"
           />
         </div>
-        <p className="mt-4 text-sm sm:text-base md:text-lg text-white/80 max-w-2xl">
-          Agencia digital de marketing enfocada en estrategia, contenido y performance.
-        </p>
+        <QuoteText>
+          Agencia de growth marketing que combina estrategia, SEO &amp; performance, marketing de contenidos, desarrollo web, branding y automatización a medida para transformar tráfico en negocio real.
+        </QuoteText>
       </div>
     </section>
   );
