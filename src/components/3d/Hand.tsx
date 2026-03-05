@@ -124,9 +124,9 @@ const steps = [
 ]
 
 const material = new MeshPhysicalMaterial({
-  color: new Color('#FF4500'),
-  metalness: 1,
-  roughness: 0.2,
+  color: new Color('#ff0000'),
+  metalness: 0.6,
+  roughness: 0.25,
   wireframe: false,
   transparent: true,
   opacity: 0,
@@ -175,7 +175,7 @@ export function Hand() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const duration = prefersReducedMotion ? 0 : 0.6
     const darkColor = new Color('#000000')
-    const originalColor = new Color('#FF4500')
+    const originalColor = new Color('#ff0000')
 
     const toDark = () =>
       gsap.to(material.color, {

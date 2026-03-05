@@ -22,42 +22,40 @@ const services: Service[] = [
     id: '01',
     number: '01',
     title: 'SEO & Performance',
-    description: 'Optimizamos tu presencia digital para maximizar el rendimiento y la visibilidad orgánica.',
+    description:
+      'Hacemos que tu sitio aparezca mejor en Google y cargue rápido, para que más personas te encuentren y se queden.',
     tags: ['Auditoría', 'Optimización', 'Velocidad', 'Ranking']
   },
   {
     id: '02',
     number: '02',
-    title: 'Marketing Digital',
-    description: 'Estrategias de marketing digital que impulsan el crecimiento y maximizan el retorno de inversión.',
+    title: 'Redes sociales',
+    description:
+      'Creamos campañas en redes y otros canales digitales que atraen a tus clientes ideales y generan consultas reales.',
     tags: ['Social Media', 'Content', 'Email', 'Analytics']
   },
   {
     id: '03',
     number: '03',
     title: 'Desarrollo Web',
-    description: 'Sitios web modernos y aplicaciones que combinan diseño atractivo con funcionalidad excepcional.',
+    description:
+      'Diseñamos y desarrollamos páginas web modernas que muestran claramente qué hacés y por qué elegirte.',
     tags: ['Frontend', 'Backend', 'E-commerce', 'App']
   },
   {
     id: '04',
     number: '04',
     title: 'Consultoría',
-    description: 'Asesoramiento estratégico para optimizar procesos y acelerar el crecimiento empresarial.',
+    description:
+      'Te acompañamos con una mirada externa para ordenar tu marketing, priorizar acciones y tomar mejores decisiones.',
     tags: ['Estrategia', 'Análisis', 'Procesos', 'Growth']
   },
   {
     id: '05',
     number: '05',
-    title: 'Branding',
-    description: 'Construimos identidades de marca que conectan y perduran en la mente del consumidor.',
-    tags: ['Logo', 'Identidad', 'Voz', 'Diseño']
-  },
-  {
-    id: '06',
-    number: '06',
-    title: 'Automatización y software a medida',
-    description: 'Diseñamos y desarrollamos soluciones digitales a medida que automatizan procesos clave, reducen errores operativos y liberan tiempo para que tu equipo se enfoque en lo estratégico.',
+    title: 'Automatización de software',
+    description:
+      'Creamos herramientas a medida que automatizan tareas repetitivas, reducen errores y te liberan tiempo para enfocarte en hacer crecer el negocio.',
     tags: ['Automatización', 'Integraciones', 'Sistemas a medida', 'Flujos']
   }
 ];

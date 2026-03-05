@@ -152,6 +152,22 @@ export default function HeroSection() {
         <QuoteText>
           Agencia de growth marketing que combina estrategia, SEO &amp; performance, marketing de contenidos, desarrollo web, branding y automatización a medida para transformar tráfico en negocio real.
         </QuoteText>
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
+          <a
+            href="https://wa.me/5492604272400?text=Hola%20Kuatrometric%2C%20me%20gustar%C3%ADa%20agendar%20una%20llamada%20para%20hablar%20sobre%20mi%20proyecto."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-full bg-[#25D366] px-8 py-4 text-white font-semibold tracking-wide transition-transform duration-300 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+          >
+            Hablemos por WhatsApp
+          </a>
+          <a
+            href="#servicios"
+            className="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-4 text-white/80 font-semibold tracking-wide transition-colors duration-300 hover:text-white hover:border-white"
+          >
+            Ver servicios
+          </a>
+        </div>
       </div>
     </section>
   );
