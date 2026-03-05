@@ -102,7 +102,7 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="servicios" className="h-screen bg-transparent relative overflow-hidden flex items-center">
+    <section ref={sectionRef} id="servicios" className="h-[950px] bg-transparent relative overflow-hidden flex items-center">
       {/* Background/Overlay elements can go here if needed */}
       
       <div ref={trackRef} className="flex gap-12 px-12 md:px-24 w-max items-center">

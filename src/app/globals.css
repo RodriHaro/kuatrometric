@@ -64,6 +64,12 @@ body {
   line-height: 1.6;
 }
 
+/* Keep Next.js devtools portal from pinning top-left in dev preview */
+nextjs-portal {
+  left: unset !important;
+  top: unset !important;
+}
+
 /* Custom utilities for navbar hover effects */
 .hover-underline {
   position: relative;
@@ -120,8 +126,21 @@ body {
   background: #e40014;
   color: #ffffff;
   padding: 0 0.12em;
-  border-radius: 0.08em;
+  border-radius: 0;
   box-decoration-break: clone;
+}
+
+.overlap-word-highlight-start {
+  padding-right: 0.04em;
+}
+
+.overlap-word-highlight-end {
+  padding-left: 0.04em;
+}
+
+.overlap-word-highlight-middle {
+  padding-left: 0.04em;
+  padding-right: 0.04em;
 }
 
 /* Asegura que las letras del highlight siempre sean visibles */
@@ -132,6 +151,10 @@ body {
 .overlap-space {
   display: inline-block;
   width: 0.3ch;
+}
+
+.overlap-space-highlight-join {
+  width: 0;
 }
 
 .overlap-text.overlap-back {
@@ -229,12 +252,16 @@ body {
   .hero-section .overlap-text {
     white-space: normal;
     text-shadow: none;
-    letter-spacing: -0.06ch;
+    letter-spacing: -0.02ch;
   }
 
   .hero-section .hero-overlap-text {
-    font-size: 2.25rem;
-    line-height: 1.1;
+    font-size: clamp(3.4rem, 14vw, 4.6rem);
+    line-height: 0.98;
+  }
+
+  .hero-section .hero-quote {
+    max-width: 22ch;
   }
 }
 

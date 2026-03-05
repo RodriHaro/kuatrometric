@@ -147,6 +147,7 @@ export default function MobileNavbar() {
             width={500}
             height={500}
             priority
+            fetchPriority="high"
             className="h-[32rem] w-[32rem] object-contain"
           />
         </button>

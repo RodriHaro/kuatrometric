@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import HeroSection from '../components/HeroSection';
 import ClientsSection from '../components/ClientsSection';
@@ -14,40 +14,28 @@ import ScrollToTopButton from '../components/ScrollToTopButton';
 const Scene = dynamic(() => import('@/components/3d/Scene'), { ssr: false });
 
 export default function Home() {
-  const [isSceneReady, setIsSceneReady] = useState(false);
-
-  const handleSceneReady = useCallback(() => {
-    setIsSceneReady(true);
-  }, []);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Seguridad: si la escena tarda demasiado, mostramos el contenido igual
-    const timeout = setTimeout(() => {
-      setIsSceneReady(true);
-    }, 1500);
-
-    return () => clearTimeout(timeout);
+    const t = setTimeout(() => setIsReady(true), 1500);
+    return () => clearTimeout(t);
   }, []);
 
   return (
     <main className="relative min-h-screen bg-[#050205]">
-       {/* Global 3D Background */}
       <div className="fixed inset-0 z-0 select-none pointer-events-none">
-        <Scene onReady={handleSceneReady} />
+        <Scene />
       </div>
 
-      {/* Main Content */}
       <div
         className={`relative z-10 transition-opacity duration-500 ease-out ${
-          isSceneReady ? 'opacity-100' : 'opacity-0'
+          isReady ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <section id="inicio">
-            <HeroSection />
+          <HeroSection />
         </section>
-
         <ClientsSection />
-        {/* ViewAllWorksButton Removed */}
         <ServicesSection />
         <AboutSection />
         <CtaSection />

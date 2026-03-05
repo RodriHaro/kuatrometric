@@ -42,9 +42,13 @@ export default function CtaSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="contacto" className="py-12 md:py-24 bg-transparent overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="contacto"
+      className="h-[650px] py-12 md:py-24 bg-transparent overflow-hidden flex flex-col justify-center items-center"
+    >
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="rounded-3xl border border-white/10 bg-[#0b0b0b]/30 backdrop-blur-sm p-10 md:p-16 relative overflow-hidden">
+        <div className="flex flex-col justify-center items-start rounded-3xl border border-white/10 bg-[#0b0b0b]/30 backdrop-blur-sm p-10 md:p-16 relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(228,0,20,0.18),transparent_55%)]" />
 
           <div className="relative z-10 max-w-4xl">

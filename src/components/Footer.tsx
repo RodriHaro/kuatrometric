@@ -86,7 +86,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#F8F8F8] py-8 md:py-16 px-6 lg:px-8">
+    <footer className="bg-[#F8F8F8] h-[710px] py-8 md:py-16 px-6 lg:px-8">
       <div className="container mx-auto">
         {/* Contact Section */}
         <div className="mb-8 md:mb-16">
@@ -229,7 +229,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="text-center mt-6 md:mt-12 pt-4 md:pt-8 border-t border-gray-300">
+        <div className="text-center mt-6 md:mt-12 pt-4 md:pt-8 border-t border-gray-300 flex justify-center items-center h-0">
           <p className="text-sm text-gray-500">
             © 2026 Kuatrometric. Todos los derechos reservados.
           </p>

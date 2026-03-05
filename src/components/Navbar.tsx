@@ -93,8 +93,9 @@ export default function Navbar() {
       <div
         className={`
           pointer-events-auto
-          w-full max-w-[900px] mx-auto
-          px-8 py-3
+          w-full max-w-[900px] lg:max-w-[980px] mx-auto
+          px-6 md:px-8 lg:px-10
+          py-3 lg:py-4
           flex justify-between items-center relative
           rounded-full border border-gray-800
           transition-all duration-300 ease-out
@@ -103,16 +104,16 @@ export default function Navbar() {
       >
         
         {/* Left Links */}
-        <div className="flex gap-12 w-1/3 justify-end">
+        <div className="flex gap-6 lg:gap-10 w-1/3 justify-end">
           <button 
             onClick={() => smoothScrollTo('clientes')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
+            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             01. Clientes
           </button>
           <button 
             onClick={() => smoothScrollTo('servicios')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
+            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             02. Servicios
           </button>
@@ -124,25 +125,26 @@ export default function Navbar() {
             <Image
               src="/images/logos/logok.png"
               alt="KUATROMETRIC"
-              width={100}
-              height={100}
+              width={120}
+              height={120}
               priority
-              className="w-[100px] h-auto object-contain"
+              fetchPriority="high"
+              className="w-[120px] lg:w-[130px] h-auto object-contain"
             />
           </button>
         </div>
 
         {/* Right Links */}
-        <div className="flex gap-12 w-1/3 justify-start">
+        <div className="flex gap-6 lg:gap-10 w-1/3 justify-start">
           <button 
             onClick={() => smoothScrollTo('nosotros')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
+            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             03. Nosotros
           </button>
           <button 
             onClick={() => smoothScrollTo('contacto')}
-            className="text-sm font-medium tracking-wide hover:opacity-60 transition-opacity uppercase text-white"
+            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             04. Contacto
           </button>

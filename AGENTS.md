@@ -37,6 +37,10 @@
 - Commit messages follow Conventional Commits: `feat: ...`, `fix: ...`, `chore: ...`.
 - PRs should include a clear description, testing notes, and screenshots/clips for UI or motion changes.
 
+## Agent skills
+- **Performance** (`.agents/skills/performance`): Optimización de rendimiento web según Lighthouse; usar cuando se pida mejorar velocidad, LCP, FCP o hacer auditoría de performance.
+- Skills adicionales en `.agents/skills/` y referenciadas en `.codex/skills/` para Cursor.
+
 ## Configuration & Security
 - Store secrets in `.env.local` (do not commit).
 - Keep a single lockfile updated (prefer `package-lock.json` unless the team standardizes on `pnpm`).
