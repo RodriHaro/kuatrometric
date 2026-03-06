@@ -147,7 +147,7 @@ export default function WhatsappButton() {
               <div className="relative flex items-center gap-3">
                 <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-white/20 ring-2 ring-white/5 md:h-14 md:w-14">
                   <Image
-                    src="/paolo.jpeg"
+                    src="/Paolo.jpeg"
                     alt="Contacto de Kuatrometric"
                     width={56}
                     height={56}
