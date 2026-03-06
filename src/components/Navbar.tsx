@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import type Lenis from 'lenis';
 
 declare global {
   interface Window {
-    __lenis?: {
-      scrollTo: (target: HTMLElement | number | string, options?: { offset?: number }) => void;
-    } | null;
+    __lenis?: Lenis | null;
   }
 }
 
@@ -22,13 +21,13 @@ export default function Navbar() {
     };
 
     const attachLenisListener = () => {
-      const lenis = window.__lenis as any;
-      if (!lenis || typeof lenis.on !== 'function' || typeof lenis.off !== 'function') {
+      const lenis = window.__lenis;
+      if (!lenis) {
         return false;
       }
 
-      const onLenisScroll = (e: { scroll: number }) => {
-        setIsScrolled(e.scroll > 50);
+      const onLenisScroll = (instance: Lenis) => {
+        setIsScrolled(instance.scroll > 50);
       };
 
       lenis.on('scroll', onLenisScroll);
@@ -61,12 +60,12 @@ export default function Navbar() {
     if (!element) return;
 
     const lenis = window.__lenis;
+    const offset = elementId === 'nosotros' ? -160 : -90;
 
     if (lenis) {
-      lenis.scrollTo(element, { offset: -90 });
+      lenis.scrollTo(element, { offset });
     } else {
-      const navbarHeight = 90;
-      const targetPosition = element.offsetTop - navbarHeight;
+      const targetPosition = element.offsetTop + offset;
       window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
   };
@@ -107,13 +106,13 @@ export default function Navbar() {
         <div className="flex gap-6 lg:gap-10 w-1/3 justify-end">
           <button 
             onClick={() => smoothScrollTo('clientes')}
-            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
+            className="cursor-pointer text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             01. Clientes
           </button>
           <button 
             onClick={() => smoothScrollTo('servicios')}
-            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
+            className="cursor-pointer text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             02. Servicios
           </button>
@@ -121,7 +120,7 @@ export default function Navbar() {
 
         {/* Center Logo */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <button onClick={scrollToTop} className="block transition-transform hover:scale-105">
+          <button onClick={scrollToTop} className="cursor-pointer block transition-transform hover:scale-105">
             <Image
               src="/images/logos/logok.png"
               alt="KUATROMETRIC"
@@ -138,13 +137,13 @@ export default function Navbar() {
         <div className="flex gap-6 lg:gap-10 w-1/3 justify-start">
           <button 
             onClick={() => smoothScrollTo('nosotros')}
-            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
+            className="cursor-pointer text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             03. Nosotros
           </button>
           <button 
             onClick={() => smoothScrollTo('contacto')}
-            className="text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
+            className="cursor-pointer text-base lg:text-lg font-semibold tracking-wide hover:opacity-60 transition-opacity uppercase text-white text-left leading-none whitespace-nowrap"
           >
             04. Contacto
           </button>

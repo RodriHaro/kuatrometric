@@ -5,6 +5,12 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+declare global {
+  interface Window {
+    __lenis?: Lenis | null;
+  }
+}
+
 export default function SmoothScroll() {
   useEffect(() => {
     const lenis = new Lenis({
@@ -17,7 +23,7 @@ export default function SmoothScroll() {
     });
 
     // Exponer instancia globalmente para navegación programática (nav, botones, etc.)
-    (window as any).__lenis = lenis;
+    window.__lenis = lenis;
     // Notificar a quien lo necesite que Lenis está listo
     window.dispatchEvent(new Event("lenisReady"));
 
@@ -33,8 +39,8 @@ export default function SmoothScroll() {
     return () => {
       lenis.destroy();
       gsap.ticker.remove(raf);
-      if ((window as any).__lenis === lenis) {
-        (window as any).__lenis = null;
+      if (window.__lenis === lenis) {
+        window.__lenis = null;
       }
     };
   }, []);

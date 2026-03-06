@@ -14,8 +14,8 @@ const clientLogos = [
 
 export default function ClientsSection() {
   return (
-    <section id="clientes" className="h-[800px] bg-transparent overflow-hidden">
-      <div className="max-w-[80vw] mx-auto clients-shell">
+    <section id="clientes" className="h-[680px] md:h-[740px] bg-transparent overflow-hidden flex items-center">
+      <div className="w-[calc(100%-32px)] md:w-auto md:max-w-[80vw] mx-auto clients-shell">
         <div className="text-center mb-8 md:mb-12">
           <div className="flex items-center justify-center mb-4 md:mb-6">
             <span className="text-sm font-mono text-[#e40014] uppercase tracking-wider">

@@ -1,28 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import Image from 'next/image';
+import type Lenis from 'lenis';
 
 declare global {
   interface Window {
-    __lenis?: {
-      scrollTo: (target: HTMLElement | number | string, options?: { offset?: number }) => void;
-    } | null;
+    __lenis?: Lenis | null;
   }
 }
 
 interface NavItem {
   href: string;
   label: string;
-  path: string;
 }
 
 const navItems: NavItem[] = [
-  { href: '#clientes', label: '01. Clientes', path: '/' },
-  { href: '#servicios', label: '02. Servicios', path: '/' },
-  { href: '#nosotros', label: '03. Nosotros', path: '/' },
-  { href: '#contacto', label: '04. Contacto', path: '/' },
+  { href: '#clientes', label: '01. Clientes' },
+  { href: '#servicios', label: '02. Servicios' },
+  { href: '#nosotros', label: '03. Nosotros' },
+  { href: '#contacto', label: '04. Contacto' },
 ];
 
 const socialLinks = [
@@ -33,7 +30,6 @@ const socialLinks = [
 export default function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,24 +51,28 @@ export default function MobileNavbar() {
     return () => window.removeEventListener('scroll', throttledScrollHandler);
   }, []);
 
-  // Close menu on route change
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-
   // Prevent body scroll when menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       document.body.style.overscrollBehavior = 'contain';
+      document.body.dataset.mobileMenuOpen = 'true';
     } else {
       document.body.style.overflow = '';
       document.body.style.overscrollBehavior = '';
+      delete document.body.dataset.mobileMenuOpen;
     }
+
+    window.dispatchEvent(
+      new CustomEvent('mobileMenuStateChange', {
+        detail: { isOpen },
+      })
+    );
 
     return () => {
       document.body.style.overflow = '';
       document.body.style.overscrollBehavior = '';
+      delete document.body.dataset.mobileMenuOpen;
     };
   }, [isOpen]);
 
@@ -84,12 +84,12 @@ export default function MobileNavbar() {
     const element = document.getElementById(elementId);
     if (element) {
       const lenis = window.__lenis;
+      const offset = elementId === 'nosotros' ? -156 : -72;
 
       if (lenis) {
-        lenis.scrollTo(element, { offset: -72 });
+        lenis.scrollTo(element, { offset });
       } else {
-        const navbarHeight = 72;
-        const targetPosition = element.offsetTop - navbarHeight;
+        const targetPosition = element.offsetTop + offset;
         
         window.scrollTo({
           top: targetPosition,
@@ -112,12 +112,6 @@ export default function MobileNavbar() {
       });
     }
     setIsOpen(false);
-  };
-
-  const isActiveSection = (href: string) => {
-    const sectionId = href.replace('#', '');
-    // Simple active detection - you can enhance this with intersection observer
-    return pathname === '/' && sectionId === 'inicio';
   };
 
   return (
@@ -204,22 +198,17 @@ export default function MobileNavbar() {
           
           {/* Navigation Links */}
           <nav className="flex-1 flex flex-col justify-center">
-            <ul className="space-y-4 text-center">
+            <ul className="mx-auto w-[260px] space-y-4 pl-8 text-center">
               {navItems.map((item) => {
-                const isActive = isActiveSection(item.href);
-                
                 return (
                   <li key={item.href}>
                     <button
                       onClick={() => smoothScrollTo(item.href.replace('#', ''))}
                       className={`
-                        block w-full text-center text-[24px] tracking-wider font-medium
+                        inline-flex w-full items-center justify-start text-left text-[24px] uppercase tracking-wider font-medium tabular-nums
                         transition-all duration-200 ease-out
                         focus:outline-none focus:ring-2 focus:ring-[#FF6B6B] focus:ring-offset-2 rounded
-                        ${isActive 
-                          ? 'text-black font-semibold' 
-                          : 'text-black hover:text-gray-700 active:text-gray-800'
-                        }
+                        text-black hover:text-gray-700 active:text-gray-800
                       `}
                     >
                       {item.label}
@@ -263,9 +252,9 @@ export default function MobileNavbar() {
                       fill="none" 
                       stroke="white" 
                       strokeWidth="2"
-                      className="transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      className="rotate-45 transition-transform duration-200 ease-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     >
-                      <path d="m7 7 10 10M7 17 17 7"/>
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                   </div>
                   <span className="
@@ -302,17 +291,35 @@ export default function MobileNavbar() {
                     aria-label={`Visitar ${social.name} de KUATROMETRIC`}
                   >
                     <span>{social.name}</span>
-                    <svg 
-                      width="18" 
-                      height="18" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      strokeWidth="2"
-                      className="transition-transform duration-200 ease-out group-hover:translate-x-1 group-hover:-translate-y-1"
-                    >
-                      <path d="m7 7 10 10M7 17 17 7"/>
-                    </svg>
+                    {social.name === 'Instagram' ? (
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="transition-transform duration-200 ease-out group-hover:translate-x-1 group-hover:-translate-y-1"
+                      >
+                        <rect x="4" y="4" width="16" height="16" rx="5" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="17" cy="7" r="1" />
+                      </svg>
+                    ) : (
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="transition-transform duration-200 ease-out group-hover:translate-x-1 group-hover:-translate-y-1"
+                      >
+                        <path d="M6 9H9V19H6V9Z" />
+                        <path d="M7.5 5C6.7 5 6 5.7 6 6.5C6 7.3 6.7 8 7.5 8C8.3 8 9 7.3 9 6.5C9 5.7 8.3 5 7.5 5Z" />
+                        <path d="M11 9H14V10.5C14.4 9.8 15.3 9 16.7 9C19.1 9 19.5 10.6 19.5 12.6V19H16.5V13.3C16.5 12.3 16.3 11.5 15.3 11.5C14.3 11.5 13.9 12.2 13.9 13.3V19H11V9Z" />
+                      </svg>
+                    )}
                   </a>
                 </li>
               ))}

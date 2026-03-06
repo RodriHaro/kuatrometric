@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -123,6 +123,20 @@ const steps = [
   },
 ]
 
+const primarySteps = [
+  ...steps.filter((step) => step.type === 1),
+  {
+    position: [-2.25, -0.62, 0] as [number, number, number],
+    scale: 0.05,
+    rotation: [
+      MathUtils.degToRad(-90),
+      MathUtils.degToRad(-405),
+      MathUtils.degToRad(-45),
+    ] as [number, number, number],
+    type: 1,
+  },
+]
+
 const material = new MeshPhysicalMaterial({
   color: new Color('#ff0000'),
   metalness: 0.6,
@@ -135,9 +149,10 @@ const material = new MeshPhysicalMaterial({
 
 export function Hand() {
   const { scene: arm1 } = useGLTF('/models/arm.glb')
-  const [type, setType] = useState(1)
 
   const parent = useRef<Group>(null)
+  const progressRef = useRef(0)
+  const endBoundaryRef = useRef<number | null>(null)
   const { viewport } = useThree()
 
   useLayoutEffect(() => {
@@ -207,27 +222,84 @@ export function Hand() {
     return () => trigger.kill()
   }, [])
 
+  useLayoutEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const resolveEndBoundary = () => {
+      const fallbackBoundary = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+      const servicesTrigger = ScrollTrigger.getById('services-horizontal-scroll')
+      const triggerStart =
+        typeof servicesTrigger?.start === 'number' && Number.isFinite(servicesTrigger.start)
+          ? servicesTrigger.start
+          : null
+      const triggerEnd =
+        typeof servicesTrigger?.end === 'number' && Number.isFinite(servicesTrigger.end)
+          ? servicesTrigger.end
+          : null
+
+      const servicesSection = document.getElementById('servicios')
+      const sectionTop = servicesSection?.offsetTop ?? null
+      const firstServiceCard = document.querySelector<HTMLElement>('[data-service-card="first"]')
+
+      const desktopBase = triggerStart ?? sectionTop ?? fallbackBoundary
+      const desktopExtra = firstServiceCard ? Math.max(0, firstServiceCard.offsetLeft) : 0
+      const desktopBoundary = desktopBase + desktopExtra
+
+      const mobileBoundary = triggerEnd ?? triggerStart ?? sectionTop ?? fallbackBoundary
+
+      const baseBoundary = window.innerWidth < 768 ? mobileBoundary : desktopBoundary
+
+      if (typeof baseBoundary === 'number' && Number.isFinite(baseBoundary) && baseBoundary > 0) {
+        endBoundaryRef.current = Math.max(1, baseBoundary)
+      }
+    }
+
+    resolveEndBoundary()
+    window.addEventListener('resize', resolveEndBoundary)
+    ScrollTrigger.addEventListener('refresh', resolveEndBoundary)
+
+    return () => {
+      window.removeEventListener('resize', resolveEndBoundary)
+      ScrollTrigger.removeEventListener('refresh', resolveEndBoundary)
+    }
+  }, [])
+
   useFrame(() => {
     if (!parent.current) return
 
-    // Calculate scroll progress (0 to 1) based on window scroll
-    const scrollMax = document.documentElement.scrollHeight - window.innerHeight
-    const scroll = scrollMax > 0 ? window.scrollY / scrollMax : 0
+    const scrollY = window.scrollY
+    if (scrollY <= 24) {
+      progressRef.current = 0
+      material.opacity = 0.7
+    }
+
+    const fallbackBoundary = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+
+    const endBoundary = Math.max(1, endBoundaryRef.current ?? fallbackBoundary)
+
+    progressRef.current = MathUtils.clamp(scrollY / endBoundary, 0, 1)
+    const scroll = progressRef.current
+    parent.current.visible = scroll < 0.999
+    if (!parent.current.visible) return
+
+    const fadeStart = 0.9
+    if (scroll > fadeStart) {
+      const fadeProgress = MathUtils.clamp((scroll - fadeStart) / (1 - fadeStart), 0, 1)
+      material.opacity = 0.7 * (1 - fadeProgress)
+    } else if (material.opacity < 0.7) {
+      material.opacity = Math.min(0.7, material.opacity + 0.06)
+    }
     
-    // We need segments. If 10 steps, 9 segments.
+    // Use only the primary phase to avoid a second perceived cycle.
     // progress within total steps
-    const totalSegments = steps.length - 1
+    const totalSegments = primarySteps.length - 1
     const currentSegmentIndex = Math.min(Math.floor(scroll * totalSegments), totalSegments - 1)
     const nextSegmentIndex = currentSegmentIndex + 1
     
     const segmentProgress = (scroll * totalSegments) - currentSegmentIndex
 
-    const from = steps[currentSegmentIndex]
-    const to = steps[nextSegmentIndex]
-    
-    if (parent.current) {
-        parent.current.visible = from?.type === to?.type
-    }
+    const from = primarySteps[currentSegmentIndex]
+    const to = primarySteps[nextSegmentIndex]
 
     if (!to || !from) return
 
@@ -254,15 +326,11 @@ export function Hand() {
     parent.current.scale.setScalar(viewport.height * _scale)
     parent.current.position.copy(_position)
     parent.current.rotation.copy(_rotation)
-
-    if (to.type !== type) {
-        setType(to.type)
-    }
   })
 
   return (
     <group ref={parent}>
-      {type === 1 && <primitive object={arm1} scale={[1, 1, 1]} />}
+      <primitive object={arm1} scale={[1, 1, 1]} />
     </group>
   )
 }

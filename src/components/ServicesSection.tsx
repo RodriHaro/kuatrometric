@@ -71,24 +71,31 @@ export default function ServicesSection() {
       const section = sectionRef.current;
 
       if (track && section) {
-        
-        const getScrollAmount = () => {
-           // Calculate exactly how much we need to move left
-           // (Full Content Width) - (Viewport Width)
-           return -(track.scrollWidth - window.innerWidth);
+        const getHorizontalDistance = () => {
+          const baseDistance = track.scrollWidth - window.innerWidth;
+          if (baseDistance <= 0) return 0;
+
+          // In mobile we stop a bit earlier so the last card remains readable.
+          if (window.innerWidth < 768) {
+            const mobileTrim = Math.min(160, Math.max(72, window.innerWidth * 0.18));
+            return Math.max(0, baseDistance - mobileTrim);
+          }
+
+          return baseDistance;
         };
 
-        const tween = gsap.to(track, {
-          x: getScrollAmount,
+        gsap.to(track, {
+          x: () => -getHorizontalDistance(),
           ease: "none",
           scrollTrigger: {
+            id: 'services-horizontal-scroll',
             trigger: section,
             pin: true,
             start: "top top",
             // Pin duration: equal to the distance we need to scroll horizontally
             // Multiplied by window.innerHeight/viewport width or a factor to control speed if desired
             // here strictly simply ensuring we cover the full distance
-            end: () => `+=${track.scrollWidth - window.innerWidth}`, 
+            end: () => `+=${getHorizontalDistance()}`,
             scrub: 1,
             invalidateOnRefresh: true, 
           }
@@ -100,10 +107,10 @@ export default function ServicesSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="servicios" className="h-[950px] bg-transparent relative overflow-hidden flex items-center">
+    <section ref={sectionRef} id="servicios" className="h-[840px] md:h-[900px] bg-transparent relative overflow-hidden flex items-center">
       {/* Background/Overlay elements can go here if needed */}
       
-      <div ref={trackRef} className="flex gap-12 px-12 md:px-24 w-max items-center">
+      <div ref={trackRef} data-services-track className="flex gap-12 px-12 md:px-24 w-max items-center">
         {/* Header/Intro Card */}
         <div className="w-[80vw] md:w-[600px] shrink-0 flex flex-col justify-center">
             <span className="text-sm font-mono text-[#e40014] mb-4 tracking-wider">[02] SERVICIOS</span>
@@ -123,6 +130,7 @@ export default function ServicesSection() {
         {services.map((service, index) => (
             <div
             key={service.id}
+            data-service-card={index === 0 ? 'first' : undefined}
             className="w-[85vw] md:w-[450px] h-[550px] shrink-0 border border-gray-800 bg-[#050205]/40 backdrop-blur-sm p-8 md:p-12 flex flex-col justify-between group hover:border-[#e40014]/50 transition-colors duration-500 rounded-sm"
           >
             <div>
@@ -150,7 +158,7 @@ export default function ServicesSection() {
         ))}
         
         {/* Final Trigger/Spacer */}
-        <div className="w-[20vw] shrink-0"></div>
+        <div className="w-[3vw] md:w-[5vw] shrink-0"></div>
       </div>
     </section>
   );

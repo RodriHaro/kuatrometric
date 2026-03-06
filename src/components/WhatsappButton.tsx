@@ -2,8 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import gsap from 'gsap';
+
+declare global {
+  interface WindowEventMap {
+    mobileMenuStateChange: CustomEvent<{ isOpen: boolean }>;
+  }
+}
 
 const WHATSAPP_NUMBER = '5492604272400';
 const WHATSAPP_MESSAGE =
@@ -13,9 +19,57 @@ const CARD_WIDTH = 320;
 const ANIM_DURATION = 1.4;
 const EASE = 'power2.out';
 
+function WhatsAppIcon({ className }: { className: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+    </svg>
+  );
+}
+
 export default function WhatsappButton() {
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const shouldShow = isVisible && !isMenuOpen;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsVisible((previous) => {
+        if (window.scrollY > 220) return true;
+        if (window.scrollY < 140) return false;
+        return previous;
+      });
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const syncInitialState = () => {
+      setIsMenuOpen(document.body.dataset.mobileMenuOpen === 'true');
+    };
+
+    const handleMenuState = (event: CustomEvent<{ isOpen: boolean }>) => {
+      setIsMenuOpen(event.detail.isOpen);
+    };
+
+    syncInitialState();
+    window.addEventListener('mobileMenuStateChange', handleMenuState);
+
+    return () => {
+      window.removeEventListener('mobileMenuStateChange', handleMenuState);
+    };
+  }, []);
 
   const getDuration = useCallback(() => {
     if (typeof window === 'undefined') return ANIM_DURATION;
@@ -50,8 +104,20 @@ export default function WhatsappButton() {
     });
   }, [getDuration]);
 
+  useEffect(() => {
+    if (shouldShow || !cardRef.current) return;
+    gsap.set(cardRef.current, { width: 0, opacity: 0, x: 12 });
+  }, [shouldShow]);
+
   return (
-    <div className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3">
+    <div
+      className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 flex flex-col items-end gap-3 origin-center transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+        shouldShow
+          ? 'opacity-100 translate-y-0 scale-100 rotate-0 pointer-events-auto'
+          : 'opacity-0 translate-y-2 scale-95 rotate-0 pointer-events-none'
+      }`}
+      aria-hidden={!shouldShow}
+    >
       <Link
         href={href}
         target="_blank"
@@ -120,24 +186,7 @@ export default function WhatsappButton() {
             aria-hidden="true"
             className="absolute -inset-1 rounded-full border border-[#e40014]/0 transition-colors duration-500 group-hover:border-[#e40014]/45"
           />
-          <svg
-            aria-hidden="true"
-            className="relative h-7 w-7 transition-transform duration-500 group-hover:-translate-y-[1px]"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
-            <path
-              d="M12.04 3.5C7.88 3.5 4.5 6.77 4.5 10.86c0 1.5.45 2.88 1.23 4.04L4 20l5.3-1.7a7.9 7.9 0 0 0 2.74.47c4.16 0 7.56-3.27 7.56-7.36 0-4.1-3.4-7.37-7.56-7.37Z"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.4 9.03c-.16-.37-.33-.38-.48-.38h-.4c-.14 0-.37.05-.57.24-.2.19-.76.74-.76 1.8 0 1.06.78 2.1.89 2.25.11.15 1.52 2.4 3.77 3.27 1.87.74 2.25.7 2.65.62.41-.08 1.3-.52 1.48-1.03.18-.51.18-.95.13-1.03-.05-.08-.2-.13-.41-.24-.21-.11-1.3-.64-1.51-.71-.2-.08-.35-.11-.48.11-.14.22-.55.71-.67.86-.12.15-.25.17-.46.06-.21-.11-.88-.32-1.67-1.01-.62-.54-1.04-1.21-1.16-1.42-.12-.21-.01-.32.09-.43.09-.09.21-.24.32-.36.11-.12.14-.2.21-.33.07-.13.03-.24-.02-.35-.05-.11-.48-1.18-.66-1.61Z"
-              fill="currentColor"
-            />
-          </svg>
+          <WhatsAppIcon className="relative h-9 w-9 transition-transform duration-500 group-hover:-translate-y-[1px]" />
           <span className="sr-only">Abrir WhatsApp</span>
         </span>
       </Link>
@@ -155,34 +204,15 @@ export default function WhatsappButton() {
         />
         <span
           aria-hidden="true"
-          className="absolute -inset-1 rounded-full border border-white/25 transition-colors duration-500 ease-out group-hover:border-white/40"
+          className="absolute -inset-0.5 rounded-full border border-white/25 transition-colors duration-500 ease-out group-hover:border-white/40"
         />
         <span
           aria-hidden="true"
-          className="absolute -inset-1 rounded-full border border-[#e40014]/0 transition-colors duration-700 ease-out group-hover:border-[#e40014]/50"
+          className="absolute -inset-0.5 rounded-full border border-[#e40014]/0 transition-colors duration-700 ease-out group-hover:border-[#e40014]/50"
         />
-        <svg
-          aria-hidden="true"
-          className="relative h-7 w-7 transition-transform duration-500 ease-out group-hover:-translate-y-[1px]"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M12.04 3.5C7.88 3.5 4.5 6.77 4.5 10.86c0 1.5.45 2.88 1.23 4.04L4 20l5.3-1.7a7.9 7.9 0 0 0 2.74.47c4.16 0 7.56-3.27 7.56-7.36 0-4.1-3.4-7.37-7.56-7.37Z"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M9.4 9.03c-.16-.37-.33-.38-.48-.38h-.4c-.14 0-.37.05-.57.24-.2.19-.76.74-.76 1.8 0 1.06.78 2.1.89 2.25.11.15 1.52 2.4 3.77 3.27 1.87.74 2.25.7 2.65.62.41-.08 1.3-.52 1.48-1.03.18-.51.18-.95.13-1.03-.05-.08-.2-.13-.41-.24-.21-.11-1.3-.64-1.51-.71-.2-.08-.35-.11-.48.11-.14.22-.55.71-.67.86-.12.15-.25.17-.46.06-.21-.11-.88-.32-1.67-1.01-.62-.54-1.04-1.21-1.16-1.42-.12-.21-.01-.32.09-.43.09-.09.21-.24.32-.36.11-.12.14-.2.21-.33.07-.13.03-.24-.02-.35-.05-.11-.48-1.18-.66-1.61Z"
-            fill="currentColor"
-          />
-        </svg>
+        <WhatsAppIcon className="relative h-9 w-9 transition-transform duration-500 ease-out group-hover:-translate-y-[1px]" />
         <span className="sr-only">Abrir WhatsApp</span>
       </Link>
     </div>
   );
 }
-
-

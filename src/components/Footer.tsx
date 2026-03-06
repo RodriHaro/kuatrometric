@@ -11,15 +11,6 @@ if (typeof window !== 'undefined') {
 export default function Footer() {
   const brandRef = useRef<HTMLHeadingElement | null>(null);
 
-  const smoothScrollTo = (elementId: string) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      const navbarHeight = 90;
-      const targetPosition = element.offsetTop - navbarHeight;
-      window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-    }
-  };
-
   useLayoutEffect(() => {
     if (!brandRef.current) return;
 

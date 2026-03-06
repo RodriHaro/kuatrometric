@@ -39,6 +39,10 @@
   line-height: 1.1;
 }
 
+.menu__item-link--static {
+  cursor: default;
+}
+
 .menu__item-link:hover {
   color: inherit;
 }

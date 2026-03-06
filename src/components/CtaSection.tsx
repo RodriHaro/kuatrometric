@@ -45,7 +45,7 @@ export default function CtaSection() {
     <section
       ref={sectionRef}
       id="contacto"
-      className="h-[650px] py-12 md:py-24 bg-transparent overflow-hidden flex flex-col justify-center items-center"
+      className="h-[860px] md:h-[820px] py-12 md:py-24 bg-transparent overflow-hidden flex flex-col justify-center items-center"
     >
       <div className="container mx-auto px-6 lg:px-8">
         <div className="flex flex-col justify-center items-start rounded-3xl border border-white/10 bg-[#0b0b0b]/30 backdrop-blur-sm p-10 md:p-16 relative overflow-hidden">
@@ -70,13 +70,13 @@ export default function CtaSection() {
                 href="https://wa.me/5492604272400?text=Hola%20Kuatrometric%2C%20me%20gustar%C3%ADa%20agendar%20una%20llamada%20para%20hablar%20sobre%20mi%20proyecto."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-full bg-[#25D366] px-8 py-4 text-white font-semibold tracking-wide transition-transform duration-300 hover:scale-[1.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+                className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white px-8 py-4 text-black font-semibold tracking-wide transition-[background-color,color,border-color,transform] duration-300 hover:scale-[1.02] hover:bg-[#e40014] hover:text-white hover:border-[#e40014] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#e40014]"
               >
                 Hablemos por WhatsApp
               </a>
               <a
                 href="#servicios"
-                className="inline-flex items-center justify-center rounded-full border border-white/20 px-8 py-4 text-white/80 font-semibold tracking-wide transition-colors duration-300 hover:text-white hover:border-white"
+                className="inline-flex items-center justify-center rounded-full border border-white px-8 py-4 text-white font-semibold tracking-wide transition-colors duration-300 hover:text-white hover:border-[#e40014]"
               >
                 Ver servicios
               </a>

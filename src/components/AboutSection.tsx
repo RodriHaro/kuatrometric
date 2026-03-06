@@ -12,22 +12,18 @@ if (typeof window !== 'undefined') {
 const flowingItems = [
   {
     text: 'Estrategia primero',
-    link: '#servicios',
     image: '/images/logos/logok.png'
   },
   {
     text: 'Creatividad con propósito',
-    link: '#servicios',
     image: '/images/logos/logok.png'
   },
   {
     text: 'Iteración constante',
-    link: '#servicios',
     image: '/images/logos/logok.png'
   },
   {
     text: 'Equipo cercano',
-    link: '#servicios',
     image: '/images/logos/logok.png'
   }
 ];
@@ -71,7 +67,7 @@ export default function AboutSection() {
     <section
       ref={sectionRef}
       id="nosotros"
-      className="h-[600px] py-12 md:py-24 bg-transparent overflow-hidden flex flex-col justify-center items-center"
+      className="h-[920px] md:h-[620px] py-12 md:py-24 bg-transparent overflow-hidden flex flex-col justify-center items-center"
     >
       <div className="container mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-10 items-start">
